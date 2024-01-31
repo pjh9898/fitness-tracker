@@ -37,4 +37,7 @@ out/
 .vscode/
 
 ### ssh ###
-/ssh
+src/ssh
+
+### setting ###
+src/main/resources/application.yml
