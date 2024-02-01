@@ -41,9 +41,11 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@ec92e829475ac0c2315ea8f9eced72db85bb337a # v3.0.0
       
-    - name: permission upgrade
-    -  run: chmod +x ./gradlew
-    -  run: chmod +x /home/runner/work/fitness-tracker/fitness-tracker/gradlew
+    - name: permission upgrade gradlew1
+      run: chmod +x ./gradlew
+      
+    - name: permission upgrade gradlew2
+      run: chmod +x /home/runner/work/fitness-tracker/fitness-tracker/gradlew
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
