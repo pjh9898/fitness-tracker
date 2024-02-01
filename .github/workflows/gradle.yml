@@ -15,7 +15,7 @@ on:
 jobs:
   build:
 
-    runs-on: linux-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       checks: write
@@ -57,7 +57,7 @@ jobs:
 
   dependency-submission:
 
-    runs-on: linux-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: write
 
