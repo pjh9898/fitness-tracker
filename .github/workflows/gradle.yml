@@ -15,6 +15,7 @@ env:
 
 permissions:
   contents: read
+  actions: write
 
 jobs:
   deploy:
@@ -35,10 +36,11 @@ jobs:
         java-version: '17'
 
     # (3) application.yml파일 복사
-    - uses: actions/checkout@v2
-    - run: mkdir ./src/main/resources
-    - run: touch ./src/main/resources/application.yml
-    - run: echo "${{ secrets.APPLICATION }}" | base64 --decode > ./src/main/resources/application.yml
+    - name: set YML
+      run: mkdir ./src/main/resources
+           touch ./src/main/resources/application.yml
+           echo "${{ secrets.APPLICATION }}" | base64 --decode > ./src/main/resources/application.yml
+           find src
 
     # (4) gradlew 권한 추가
     - name: permission upgrade gradlew
