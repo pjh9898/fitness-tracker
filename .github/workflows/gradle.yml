@@ -15,7 +15,7 @@ env:
 
 permissions:
   contents: read
-  actions: write
+  checks: write
 
 jobs:
   deploy:
