@@ -40,7 +40,7 @@ jobs:
     - run: mkdir ./src/main/resources
     - run: touch ./src/main/resources/application.yml
     - run: echo "${{ secrets.APPLICATION }}" | base64 --decode > ./src/main/resources/application.yml
-    - run: find src
+    - run: cat ./src/main/resources/application.yml
 
     # (4) gradlew 권한 추가
     - name: permission upgrade gradlew
