@@ -40,7 +40,6 @@ jobs:
     - run: mkdir ./src/main/resources
     - run: touch ./src/main/resources/application.yml
     - run: echo "${{ secrets.APPLICATION }}" | base64 --decode > ./src/main/resources/application.yml
-    - run: cat ./src/main/resources/application.yml
 
     # (4) gradlew 권한 추가
     - name: permission upgrade gradlew
@@ -49,7 +48,7 @@ jobs:
     # (5) Gradle build (Test 제외)
     - name: Build with Gradle
       env:
-        APPLICATIION: ${{ secrets.APPLICATIION }}
+        APPLICATIION: ${{ secrets.APPLICATION }}
       uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
       with:
         arguments: clean build -x test
