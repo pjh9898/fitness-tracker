@@ -24,25 +24,38 @@ jobs:
     environment: production
 
     steps:
-    # (1) 기본 체크아웃
+    # 기본 체크아웃
     - name: Checkout
       uses: actions/checkout@v3
       with:
         token: ${{ secrets.ACTION_TOKEN }}
         submodules: 'recursive'
 
-    # (2) JDK 17 세팅
+    # JDK 17 세팅
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
         java-version: '17'
 
-    # (3) gradlew 권한 추가
+    # gradlew 권한 추가
     - name: permission upgrade gradlew
       run: chmod +x ./gradlew
 
-    # (4) Gradle build (Test 제외)
+    # Gradle 캐시 설정
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+      
+    # submodule 파일 복사
+    - run: ./gradlew copySecret
+
+    # Gradle build (Test 제외)
     - name: Build with Gradle
       env:
         APPLICATION: ${{ secrets.APPLICATION }}
@@ -50,7 +63,7 @@ jobs:
       with:
         arguments: clean build -x test
 
-    # (5) AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
+    # AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -58,7 +71,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
-    # (6) 빌드 결과물을 S3 버킷에 업로드
+    # 빌드 결과물을 S3 버킷에 업로드
     - name: Upload to AWS S3
       run: |
         aws deploy push \
@@ -67,7 +80,7 @@ jobs:
           --s3-location s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip \
           --source .
 
-    # (7) S3 버킷에 있는 파일을 대상으로 CodeDeploy 실행
+    # S3 버킷에 있는 파일을 대상으로 CodeDeploy 실행
     - name: Deploy to AWS EC2 from S3
       run: |
         aws deploy create-deployment \
