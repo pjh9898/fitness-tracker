@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PROJECT_ROOT="/home/ec2-user/app"
-JAR_FILE="$PROJECT_ROOT/final-8-team-project-0.0.1-SNAPSHOT.jar"
+JAR_FILE="$PROJECT_ROOT/fitness-0.0.1-SNAPSHOT.jar"
 
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
 
