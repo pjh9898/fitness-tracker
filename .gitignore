@@ -41,6 +41,3 @@ src/ssh
 
 ### setting ###
 src/main/resources/application.yml
-
-### submodule ###
-private

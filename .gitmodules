@@ -1,9 +1,3 @@
 [submodule "private"]
 	path = private
 	url = https://github.com/pjh9898/fitness-tracker-private
-[submodule "submodule-path"]
-	path = submodule-path
-	url = https://github.com/pjh9898/fitness-tracker-private.git
-[submodule "fitness-tracker-private"]
-	path = fitness-tracker-private
-	url = https://github.com/pjh9898/fitness-tracker-private
