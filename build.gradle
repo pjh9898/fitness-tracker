@@ -26,7 +26,7 @@ repositories {
 }
 
 tasks.register('copySecret', Copy) {
-    from './fitness-tracker-private'
+    from './private'
     include 'application*.yml'
     into './src/main/resources'
 }
