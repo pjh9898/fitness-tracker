@@ -33,7 +33,7 @@ public class UserService {
     }
 
     private void validateDuplicateUser(User user) {
-        fineOne(user.getId())
+        fineOne(user.getUserId())
                 .ifPresent(u -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
@@ -58,7 +58,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> fineOne(Long id) {
-        return userRepository.findById(id);
+    public Optional<User> fineOne(String userId) {
+        return userRepository.findByUserId(userId);
     }
 }
