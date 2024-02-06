@@ -35,6 +35,7 @@ public class UserApiController {
 
     @PostMapping("/signup")
     public CreateSignupResponse saveUser(@RequestBody @Validated User user) {
+        System.out.println("user = " + user);
         Long id = userService.join(user);
         return new CreateSignupResponse(id);
     }
