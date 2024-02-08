@@ -5,37 +5,37 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import study.fitness.domain.Routine;
+import org.springframework.web.bind.annotation.*;
 import study.fitness.domain.User;
 import study.fitness.dto.LoginRequestDto;
+import study.fitness.dto.SignupRequestDto;
 import study.fitness.service.UserService;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 public class UserApiController {
 
     private final UserService userService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @GetMapping("/user-list")
-    public Result getUserList() {
-        List<User> findUsers = userService.findUsers();
-        List<UserDto> collect = findUsers.stream()
-                .map(m -> new UserDto(m.getNickname(), m.getRoutines()))
-                .toList();
-
-        return new Result(collect);
+    @GetMapping("/id/exists/{userId}")
+    public ResponseEntity<Map<String, Boolean>> checkIdDuplicate(@PathVariable String userId) {
+        boolean isAvailable = userService.validateDuplicateUser(userId);
+        return ResponseEntity.ok().body(Collections.singletonMap("isAvailable", isAvailable));
     }
 
     @PostMapping("/signup")
-    public CreateSignupResponse saveUser(@RequestBody @Validated User user) {
-        System.out.println("user = " + user);
+    public CreateSignupResponse saveUser(@RequestBody @Validated SignupRequestDto requestDto) {
+        User user = new User();
+        user.setUserId(requestDto.getUserId());
+        user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+        user.setNickname(requestDto.getNickname());
+
         Long id = userService.join(user);
         return new CreateSignupResponse(id);
     }
@@ -52,12 +52,6 @@ public class UserApiController {
         private T data;
     }
 
-    @Data
-    @AllArgsConstructor
-    static class UserDto {
-        private String nickname;
-        private List<Routine> routines;
-    }
 
     @Data
     private static class CreateSignupResponse {

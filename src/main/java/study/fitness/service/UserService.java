@@ -26,17 +26,14 @@ public class UserService {
     private final ModelMapper modelMapper;
 
     public Long join(User user) {
-        validateDuplicateUser(user);
+        validateDuplicateUser(user.getUserId());
 
         userRepository.save(user);
         return user.getId();
     }
 
-    private void validateDuplicateUser(User user) {
-        fineOne(user.getUserId())
-                .ifPresent(u -> {
-                    throw new IllegalStateException("이미 존재하는 회원입니다.");
-                });
+    public boolean validateDuplicateUser(String userId) {
+        return !userRepository.existsByUserId(userId);
     }
 
     @Transactional
