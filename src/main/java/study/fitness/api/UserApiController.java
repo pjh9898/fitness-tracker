@@ -56,10 +56,10 @@ public class UserApiController {
 
     @Data
     private static class CreateSignupResponse {
-        private String id;
+        private String userId;
 
-        public CreateSignupResponse(String id) {
-            this.id = id;
+        public CreateSignupResponse(String userId) {
+            this.userId = userId;
         }
     }
 
