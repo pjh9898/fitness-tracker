@@ -37,8 +37,8 @@ public class UserApiController {
         System.out.println("user.getPassword() = " + user.getPassword());
         user.setNickname(requestDto.getNickname());
 
-        String id = userService.signUp(user);
-        return new CreateSignupResponse(id);
+        String userId = userService.signUp(user);
+        return new CreateSignupResponse(userId);
     }
 
     @PostMapping("/login")
