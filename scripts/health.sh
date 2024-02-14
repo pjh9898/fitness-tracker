@@ -2,27 +2,6 @@
 
 CURRENT_PORT=$(cat /etc/nginx/conf.d/service-url.inc | grep -Po '[0-9]+' | tail -1)
 TARGET_PORT=0
-MAX_RETRIES=20
-
-check_service() {
-  local RETRIES=0
-  local URL=$1
-  while [ $RETRIES -lt $MAX_RETRIES ]; do
-    echo "Checking service at $URL... (attempt: $((RETRIES+1)))"
-    sleep 3
-
-    REQUEST=$(curl $URL)
-    if [ -n "$REQUEST" ]; then
-      echo "health check success"
-      return 0
-    fi
-
-    RETRIES=$((RETRIES+1))
-  done;
-
-  echo "Failed to check service after $MAX_RETRIES attempts."
-  return 1
-}
 
 # Toggle port Number
 if [ ${CURRENT_PORT} -eq 8081 ]; then
@@ -36,7 +15,17 @@ fi
 
 echo "> Start health check of WAS at 'http://127.0.0.1:${TARGET_PORT}' ..."
 
-if ! check_service "http://127.0.0.1:$TARGET_PORT"; then
-  echo "health check 가 실패했습니다."
-  exit 1
-fi
+for RETRY_COUNT in {1..10}
+do
+    echo "> #${RETRY_COUNT} trying..."
+    RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}"  http://127.0.0.1:${TARGET_PORT}/health-check)
+
+    if [ ${RESPONSE_CODE} -eq 200 ]; then
+        echo "> New WAS successfully running"
+        exit 0
+    elif [ ${RETRY_COUNT} -eq 10 ]; then
+        echo "> Health check failed."
+        exit 1
+    fi
+    sleep 10
+done
