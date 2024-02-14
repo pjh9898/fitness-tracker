@@ -69,20 +69,25 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
-    # 빌드 결과물을 S3 버킷에 업로드
-    - name: Upload to AWS S3
+    - name: 📦 jar, appspec, 배포 스크립트 복사
       run: |
-        aws deploy push \
-          --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
-          --ignore-hidden-files \
-          --s3-location s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip \
-          --source .
+        mkdir -p before-deploy
+        cp ./build/libs/*.jar ./before-deploy/
+        cp ./appspec.yml ./before-deploy/
+        cp -r ./scripts/ ./before-deploy/scripts/
 
-    # S3 버킷에 있는 파일을 대상으로 CodeDeploy 실행
-    - name: Deploy to AWS EC2 from S3
+    - name: 🗜️ 배포 패키지 생성
+      run: zip -r -qq ./deploy.zip ./before-deploy/
+
+    - name: 🚛 S3로 업로드
+      run: aws s3 cp --region ap-northeast-2 ./deploy.zip s3://$S3_BUCKET_NAME/
+
+    - name: 🚀 CodeDeploy를 이용한 배포
       run: |
         aws deploy create-deployment \
-          --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
-          --deployment-config-name CodeDeployDefault.AllAtOnce \
-          --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
-          --s3-location bucket=$S3_BUCKET_NAME,key=$GITHUB_SHA.zip,bundleType=zip
+        --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
+        --deployment-config-name CodeDeployDefault.AllAtOnce \
+        --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
+        --file-exists-behavior OVERWRITE \
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=deploy.zip \
+        --region ${{ env.AWS_REGION }}
