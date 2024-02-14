@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
 
@@ -25,21 +26,31 @@ public class UserService {
     private final PasswordEncoder encoder;
     private final ModelMapper modelMapper;
 
-    public Long join(User user) {
+    @Transactional
+    public String signUp(User user) {
         validateDuplicateUser(user.getUserId());
 
         userRepository.save(user);
-        return user.getId();
+        return user.getUserId();
     }
 
     public boolean validateDuplicateUser(String userId) {
-        return !userRepository.existsByUserId(userId);
+        boolean isValid = !userRepository.existsByUserId(userId);
+
+        if (!isValid) {
+            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        }
+
+        return true;
     }
 
-    @Transactional
+
     public String login(LoginRequestDto dto) {
+        System.out.println("dto = " + dto);
         String id = dto.getUserId();
+        System.out.println("id = " + id);
         String password = dto.getPassword();
+        System.out.println("password = " + password);
         User user = userRepository.findByUserId(id).orElseThrow(() -> new UsernameNotFoundException("해당 회원이 존재하지 않습니다."));
 
         if (!encoder.matches(password, user.getPassword())) {
