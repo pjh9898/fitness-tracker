@@ -34,8 +34,6 @@ else
     exit 1
 fi
 
-echo "set \$service_url http://127.0.0.1:$TARGET_PORT;" | sudo tee /etc/nginx/conf.d/service-url.inc > /dev/null
-
 echo "> Start health check of WAS at 'http://127.0.0.1:${TARGET_PORT}' ..."
 
 if ! check_service "http://127.0.0.1:$TARGET_PORT"; then
