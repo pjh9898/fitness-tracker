@@ -34,9 +34,10 @@ public class UserApiController {
         User user = new User();
         user.setUserId(requestDto.getUserId());
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+        System.out.println("user.getPassword() = " + user.getPassword());
         user.setNickname(requestDto.getNickname());
 
-        Long id = userService.join(user);
+        String id = userService.signUp(user);
         return new CreateSignupResponse(id);
     }
 
@@ -55,9 +56,9 @@ public class UserApiController {
 
     @Data
     private static class CreateSignupResponse {
-        private Long id;
+        private String id;
 
-        public CreateSignupResponse(Long id) {
+        public CreateSignupResponse(String id) {
             this.id = id;
         }
     }
