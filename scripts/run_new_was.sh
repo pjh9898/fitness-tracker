@@ -15,6 +15,9 @@ else
   echo "> No WAS is connected to nginx"
 fi
 
+# Change proxying port into target port
+echo "set \$service_url http://127.0.0.1:${TARGET_PORT};" |sudo tee /etc/nginx/conf.d/service-url.inc
+
 TARGET_PID=$(lsof -Fp -i TCP:${TARGET_PORT} | grep -Po 'p[0-9]+' | grep -Po '[0-9]+')
 
 if [ ! -z ${TARGET_PID} ]; then
@@ -26,7 +29,7 @@ JAR_NAME=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
 echo "> JAR Name: $JAR_NAME"
 
 echo "> $JAR_NAME에 실행권한 추가"
-chmod +x $JAR_NAME
+chmod +x $JAR_NAM
 
 LOG_FILE="$REPOSITORY/nohup.out"
 
