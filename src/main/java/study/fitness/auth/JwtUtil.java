@@ -6,7 +6,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import study.fitness.dto.UserLoginDto;
+import study.fitness.dto.JWTInputDto;
 
 import java.security.Key;
 import java.sql.Date;
@@ -28,13 +28,14 @@ public class JwtUtil {
         this.accessTokenExpTime = accessTokenExpTime;
     }
 
-    public String createAccessToken(UserLoginDto user) {
+    public String createAccessToken(JWTInputDto user) {
         return createToken(user, accessTokenExpTime);
     }
 
-    public String createToken(UserLoginDto user, long expireTime) {
+    public String createToken(JWTInputDto user, long expireTime) {
         Claims claims = Jwts.claims();
         claims.put("userId", user.getUserId());
+        claims.put("nickname", user.getNickname());
 
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime tokenValidity = now.plusSeconds(expireTime);
