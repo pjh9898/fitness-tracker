@@ -35,10 +35,12 @@ class UserApiServiceTest {
     @Test
     void 로그인() {
         LoginRequestDto loginRequestDto = new LoginRequestDto();
-        loginRequestDto.setUserId("testId123");
-        loginRequestDto.setPassword("testpwd123");
+        loginRequestDto.setUserId("testId12345");
+        loginRequestDto.setPassword("testpwd12345");
 
         String token = userService.login(loginRequestDto);
+
+        System.out.println("token = " + token);
 
         assertThat(token).isNotNull();
     }

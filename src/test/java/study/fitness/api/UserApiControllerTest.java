@@ -60,9 +60,9 @@ class UserApiControllerTest {
     @Test
     void 회원가입API() throws Exception {
         Map<String, String> input = new HashMap<>();
-        input.put("userId", "testId12");
-        input.put("password", "testpwd12");
-        input.put("nickname", "haribo12");
+        input.put("userId", "testId1231");
+        input.put("password", "testpwd1231");
+        input.put("nickname", "haribo1231");
         System.out.println("input = " + input);
 
         mockMvc.perform(post("/signup")
