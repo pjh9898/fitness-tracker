@@ -34,7 +34,8 @@ class UserApiServiceTest {
 
     @Test
     void 로그인() {
-        LoginRequestDto info = LoginRequestDto.of("testId123", "testpwd123");
+        LoginRequestDto info = LoginRequestDto.of("testId1", "testpwd1");
+        System.out.println("info.getUserId() = " + info.getUserId());
 
         String token = userService.login(info);
 

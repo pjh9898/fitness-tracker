@@ -47,6 +47,7 @@ public class UserService {
 
     public String login(LoginRequestDto dto) {
         String id = dto.getUserId();
+        System.out.println("id = " + id);
         String password = dto.getPassword();
         User user = userRepository.findByUserId(id).orElseThrow(() -> new UsernameNotFoundException("해당 회원이 존재하지 않습니다."));
 
