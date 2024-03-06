@@ -1,7 +1,6 @@
 package study.fitness.service;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +23,6 @@ public class UserService {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
-    private final ModelMapper modelMapper = new ModelMapper();
 
     @Transactional
     public String signUp(User user) {
@@ -35,9 +33,9 @@ public class UserService {
     }
 
     public boolean validateDuplicateUser(String userId) {
-        boolean isValid = !userRepository.existsByUserId(userId);
+        boolean isDuplicate = userRepository.existsByUserId(userId);
 
-        if (!isValid) {
+        if (isDuplicate) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
 
@@ -47,7 +45,6 @@ public class UserService {
 
     public String login(LoginRequestDto dto) {
         String id = dto.getUserId();
-        System.out.println("id = " + id);
         String password = dto.getPassword();
         User user = userRepository.findByUserId(id).orElseThrow(() -> new UsernameNotFoundException("해당 회원이 존재하지 않습니다."));
 

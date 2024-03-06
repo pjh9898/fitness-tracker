@@ -1,4 +1,4 @@
-package study.fitness.api;
+package study.fitness.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import study.fitness.domain.User;
 import study.fitness.dto.LoginRequestDto;
-import study.fitness.service.UserService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,10 +20,7 @@ class UserApiServiceTest {
 
     @Test
     void 회원가입() {
-        User user = new User();
-        user.setUserId("haribo321");
-        user.setPassword("pwd123");
-        user.setNickname("userNick");
+        User user = User.of("haribo321", "pwd123", "userNick");
 
         String id = userService.signUp(user);
         User findUser = userService.fineOne(id).orElseThrow(() -> new RuntimeException("User not found"));

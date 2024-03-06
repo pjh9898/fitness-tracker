@@ -1,14 +1,15 @@
 package study.fitness.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -26,4 +27,19 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Routine> routines;
+
+    @Builder
+    private User(String userId, String password, String nickname) {
+        this.userId = userId;
+        this.password = password;
+        this.nickname = nickname;
+    }
+
+    static public User of(String userId, String password, String nickname) {
+        return User.builder()
+                .userId(userId)
+                .password(password)
+                .nickname(nickname)
+                .build();
+    }
 }
