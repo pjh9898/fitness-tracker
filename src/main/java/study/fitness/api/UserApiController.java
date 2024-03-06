@@ -31,11 +31,11 @@ public class UserApiController {
 
     @PostMapping("/signup")
     public CreateSignupResponse saveUser(@RequestBody @Validated SignupRequestDto requestDto) {
-        User user = new User();
-        user.setUserId(requestDto.getUserId());
-        user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
-        System.out.println("user.getPassword() = " + user.getPassword());
-        user.setNickname(requestDto.getNickname());
+        String id = requestDto.getUserId();
+        String password = passwordEncoder.encode(requestDto.getPassword());
+        String nickname = requestDto.getNickname();
+
+        User user = User.of(id, password, nickname);
 
         String userId = userService.signUp(user);
         return new CreateSignupResponse(userId);

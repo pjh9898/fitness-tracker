@@ -36,7 +36,7 @@ class UserApiControllerTest {
 
     @Test
     void 아이디_중복체크API() throws Exception {
-        mockMvc.perform(get("/id/exists/testId123")
+        mockMvc.perform(get("/id/exists/testId1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.isAvailable").value(true));
@@ -63,7 +63,6 @@ class UserApiControllerTest {
         input.put("userId", "testId1231");
         input.put("password", "testpwd1231");
         input.put("nickname", "haribo1231");
-        System.out.println("input = " + input);
 
         mockMvc.perform(post("/signup")
                         .contentType(MediaType.APPLICATION_JSON)
