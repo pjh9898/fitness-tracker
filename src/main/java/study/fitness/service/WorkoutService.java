@@ -34,23 +34,33 @@ public class WorkoutService {
     }
 
     public void updateWorkout(Workout workout, String userName) {
-        boolean isExist = validateNotExistWorkout(workout.getName(), userName);
+        boolean isExist = validateNotExistWorkoutByName(workout.getName(), userName);
 
         if (isExist) {
             workoutRepository.save(workout);
         }
     }
 
-    public void deleteWorkout(Long workoutId) {
-        boolean isExist = validateNotExistWorkout(workout.getName(), userName);
+    public void deleteWorkout(Long id) {
+        boolean isExist = validateNotExistWorkoutById(id);
 
         if (isExist) {
-            workoutRepository.deleteById(workoutId);
+            workoutRepository.deleteById(id);
         }
     }
 
-    private boolean validateNotExistWorkout(String name, String username) {
+    private boolean validateNotExistWorkoutByName(String name, String username) {
         boolean isExist = workoutRepository.existsByNameAndUserName(name, username);
+
+        if (!isExist) {
+            throw new IllegalStateException("존재하지 않는 운동입니다.");
+        }
+
+        return true;
+    }
+
+    private boolean validateNotExistWorkoutById(Long id) {
+        boolean isExist = workoutRepository.existsById(id);
 
         if (!isExist) {
             throw new IllegalStateException("존재하지 않는 운동입니다.");
