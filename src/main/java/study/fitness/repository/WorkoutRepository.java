@@ -6,5 +6,4 @@ import study.fitness.domain.Workout;
 public interface WorkoutRepository extends JpaRepository<Workout, Long> {
 
     boolean existsByNameAndUserName(String name, String userName);
-
 }

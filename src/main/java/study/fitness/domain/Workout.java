@@ -1,6 +1,7 @@
 package study.fitness.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,12 +20,23 @@ public class Workout {
     private String name;
     @Enumerated(EnumType.STRING)
     private WorkoutType type;
+    private String desc;
     private String userName;
     @OneToMany(mappedBy = "workout")
     private List<Routine> routine;
 
-    public Workout(String name, WorkoutType type) {
+    @Builder
+    private Workout(String name, WorkoutType type, String desc) {
         this.name = name;
         this.type = type;
+        this.desc = desc;
+    }
+
+    static public Workout of(String name, WorkoutType type, String desc) {
+        return Workout.builder()
+                .name(name)
+                .type(type)
+                .desc(desc)
+                .build();
     }
 }

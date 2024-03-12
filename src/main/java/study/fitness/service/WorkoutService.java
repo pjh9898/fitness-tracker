@@ -5,11 +5,17 @@ import org.springframework.stereotype.Service;
 import study.fitness.domain.Workout;
 import study.fitness.repository.WorkoutRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class WorkoutService {
 
     private final WorkoutRepository workoutRepository;
+
+    public List<Workout> findWorkouts() {
+        return workoutRepository.findAll();
+    }
 
     public void createWorkout(Workout workout, String userName) {
         validateDuplicateWorkout(workout.getName(), userName);
@@ -35,11 +41,11 @@ public class WorkoutService {
         }
     }
 
-    public void deleteWorkout(Workout workout, String userName) {
+    public void deleteWorkout(Long workoutId) {
         boolean isExist = validateNotExistWorkout(workout.getName(), userName);
 
         if (isExist) {
-            workoutRepository.delete(workout);
+            workoutRepository.deleteById(workoutId);
         }
     }
 

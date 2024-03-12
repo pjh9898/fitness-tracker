@@ -1,6 +1,5 @@
 package study.fitness.api;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,17 +41,10 @@ public class UserApiController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> getUserProfile(@Validated @RequestBody LoginRequestDto request) {
+    public ResponseEntity<String> getUserProfile(@RequestBody @Validated LoginRequestDto request) {
         String token = this.userService.login(request);
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }
-
-    @Data
-    @AllArgsConstructor
-    static class Result<T> {
-        private T data;
-    }
-
 
     @Data
     private static class CreateSignupResponse {
