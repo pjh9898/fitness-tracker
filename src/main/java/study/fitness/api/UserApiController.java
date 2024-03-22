@@ -47,7 +47,7 @@ public class UserApiController {
     }
 
     @Data
-    private static class CreateSignupResponse {
+    public static class CreateSignupResponse {
         private String userId;
 
         public CreateSignupResponse(String userId) {

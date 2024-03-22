@@ -5,9 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import study.fitness.domain.Workout;
-import study.fitness.domain.WorkoutType;
-import study.fitness.dto.CreateWorkoutRequestDto;
-import study.fitness.dto.UpdateWorkoutRequestDto;
+import study.fitness.dto.WorkoutRequestDto;
 import study.fitness.service.WorkoutService;
 
 import java.util.List;
@@ -24,29 +22,17 @@ public class WorkoutApiController {
     }
 
     @PostMapping("/workout")
-    public ResponseEntity<String> saveWorkout(@RequestBody @Validated CreateWorkoutRequestDto requestDto, String userName) {
-        String name = requestDto.getName();
-        WorkoutType type = requestDto.getType();
-        String desc = requestDto.getDesc();
+    public ResponseEntity<String> saveWorkout(@RequestBody @Validated WorkoutRequestDto requestDto, String userName) {
+        workoutService.createWorkout(requestDto, userName);
 
-        Workout workout = Workout.of(name, type, desc);
-
-        workoutService.createWorkout(workout, userName);
-
-        return ResponseEntity.ok(name);
+        return ResponseEntity.ok(requestDto.getName());
     }
 
-    @PatchMapping("/workout/{workoutId}")
-    public ResponseEntity<String> updateWorkout(@RequestBody @Validated UpdateWorkoutRequestDto requestDto, String userName) {
-        String name = requestDto.getName();
-        WorkoutType type = requestDto.getType();
-        String desc = requestDto.getDesc();
+    @PatchMapping("/workout")
+    public ResponseEntity<String> updateWorkout(@RequestBody @Validated WorkoutRequestDto requestDto, String userName) {
+        workoutService.updateWorkout(requestDto, userName);
 
-        Workout workout = Workout.of(name, type, desc);
-
-        workoutService.updateWorkout(workout, userName);
-
-        return ResponseEntity.ok(name);
+        return ResponseEntity.ok(requestDto.getName());
     }
 
     @DeleteMapping("/workout/{workoutId}")
