@@ -3,8 +3,10 @@ package study.fitness.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class SignupRequestDto {
 
     @NotBlank(message = "id는 필수항목입니다.")
@@ -13,6 +15,9 @@ public class SignupRequestDto {
     private String password;
     @NotBlank(message = "닉네임은 필수항목입니다.")
     private String nickname;
+
+    public SignupRequestDto() {
+    }
 
     @Builder
     private SignupRequestDto(String userId, String password, String nickname) {

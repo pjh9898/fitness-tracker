@@ -7,8 +7,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import study.fitness.domain.User;
 import study.fitness.service.UserService;
 
 import java.util.HashMap;
@@ -20,15 +22,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ActiveProfiles("test")
 @Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserApiControllerTest {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    BCryptPasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -44,7 +47,10 @@ class UserApiControllerTest {
 
     @Test
     void 아이디_중복체크API_예외() throws Exception {
-        mockMvc.perform(get("/id/exists/testId1234598")
+        User user = User.of("testId1", "testPwd1", "testNick");
+        userService.signUp(user);
+
+        mockMvc.perform(get("/id/exists/testId1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
                     Exception resolvedException = result.getResolvedException();
@@ -60,9 +66,9 @@ class UserApiControllerTest {
     @Test
     void 회원가입API() throws Exception {
         Map<String, String> input = new HashMap<>();
-        input.put("userId", "testId1231");
-        input.put("password", "testpwd1231");
-        input.put("nickname", "haribo1231");
+        input.put("userId", "testId1");
+        input.put("password", "testpwd1");
+        input.put("nickname", "haribo1");
 
         mockMvc.perform(post("/signup")
                         .contentType(MediaType.APPLICATION_JSON)

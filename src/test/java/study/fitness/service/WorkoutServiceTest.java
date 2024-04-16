@@ -43,6 +43,7 @@ class WorkoutServiceTest {
         List<Workout> workouts = workoutService.findWorkouts();
 
         //then
+        System.out.println("workouts" + workouts.);
         assertThat(workouts.size()).isEqualTo(1);
 
     }
