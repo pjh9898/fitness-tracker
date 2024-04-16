@@ -1,11 +1,11 @@
 package study.fitness.api;
 
+import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import study.fitness.domain.User;
 import study.fitness.dto.LoginRequestDto;
@@ -23,13 +23,13 @@ public class UserApiController {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/id/exists/{userId}")
-    public ResponseEntity<Map<String, Boolean>> checkIdDuplicate(@PathVariable String userId) {
+    public ResponseEntity<Map<String, Boolean>> checkIdDuplicate(@PathVariable("userId") String userId) {
         boolean isAvailable = userService.validateDuplicateUser(userId);
         return ResponseEntity.ok().body(Collections.singletonMap("isAvailable", isAvailable));
     }
 
     @PostMapping("/signup")
-    public CreateSignupResponse saveUser(@RequestBody @Validated SignupRequestDto requestDto) {
+    public CreateSignupResponse saveUser(@RequestBody @Valid SignupRequestDto requestDto) {
         String id = requestDto.getUserId();
         String password = passwordEncoder.encode(requestDto.getPassword());
         String nickname = requestDto.getNickname();
@@ -41,7 +41,7 @@ public class UserApiController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> getUserProfile(@RequestBody @Validated LoginRequestDto request) {
+    public ResponseEntity<String> getUserProfile(@RequestBody @Valid LoginRequestDto request) {
         String token = this.userService.login(request);
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }

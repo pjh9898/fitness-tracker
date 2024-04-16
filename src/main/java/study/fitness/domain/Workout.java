@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @Getter
 @NoArgsConstructor
@@ -24,9 +22,6 @@ public class Workout {
     private String description;
 
     private String userName;
-
-    @OneToMany(mappedBy = "workout")
-    private List<Routine> routine;
 
     @Builder
     private Workout(String name, WorkoutType type, String description, String userName) {
