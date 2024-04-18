@@ -8,7 +8,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import study.fitness.domain.Workout;
 import study.fitness.domain.WorkoutType;
-import study.fitness.dto.WorkoutRequestDto;
+import study.fitness.dto.WorkoutPatchRequestDto;
+import study.fitness.dto.WorkoutPostRequestDto;
 import study.fitness.repository.WorkoutRepository;
 
 import java.util.List;
@@ -34,16 +35,16 @@ class WorkoutServiceTest {
     void 운동목록_조회() {
         //given
         String name = "name12";
-        WorkoutType type = WorkoutType.count;
+        WorkoutType type = WorkoutType.COUNT;
         String description = "desc1";
-        WorkoutRequestDto requestDto = WorkoutRequestDto.of(name, type, description);
+        WorkoutPostRequestDto requestDto = WorkoutPostRequestDto.of(name, type, description);
         workoutService.createWorkout(requestDto, description);
 
         //when
         List<Workout> workouts = workoutService.findWorkouts();
 
         //then
-        System.out.println("workouts" + workouts.);
+        System.out.println("workouts" + workouts);
         assertThat(workouts.size()).isEqualTo(1);
 
     }
@@ -54,9 +55,9 @@ class WorkoutServiceTest {
     void 운동_생성() {
         //given
         String name = "name12";
-        WorkoutType type = WorkoutType.count;
+        WorkoutType type = WorkoutType.COUNT;
         String description = "desc1";
-        WorkoutRequestDto requestDto = WorkoutRequestDto.of(name, type, description);
+        WorkoutPostRequestDto requestDto = WorkoutPostRequestDto.of(name, type, description);
 
         //when
         Long id = workoutService.createWorkout(requestDto, description);
@@ -72,14 +73,14 @@ class WorkoutServiceTest {
     void 운동_업데이트() {
         //given
         String name = "name123";
-        WorkoutType type = WorkoutType.count;
+        WorkoutType type = WorkoutType.COUNT;
         String description = "desc123";
         String userName = "userName123";
-        WorkoutRequestDto requestDto = WorkoutRequestDto.of(name, type, description);
+        WorkoutPostRequestDto requestDto = WorkoutPostRequestDto.of(name, type, description);
         workoutService.createWorkout(requestDto, userName);
 
         description = "desc1234";
-        WorkoutRequestDto requestDto2 = WorkoutRequestDto.of(name, type, description);
+        WorkoutPatchRequestDto requestDto2 = WorkoutPatchRequestDto.of(name, type, description);
 
         //when
         WorkoutService.CreateUpdateWorkoutResponse workout = workoutService.updateWorkout(requestDto2, userName);
@@ -93,10 +94,10 @@ class WorkoutServiceTest {
     void 운동_삭제() throws Exception {
         //given
         String name = "name123";
-        WorkoutType type = WorkoutType.count;
+        WorkoutType type = WorkoutType.COUNT;
         String description = "desc123";
         String userName = "userName123";
-        WorkoutRequestDto requestDto = WorkoutRequestDto.of(name, type, description);
+        WorkoutPostRequestDto requestDto = WorkoutPostRequestDto.of(name, type, description);
         Long id = workoutService.createWorkout(requestDto, userName);
 
         //when

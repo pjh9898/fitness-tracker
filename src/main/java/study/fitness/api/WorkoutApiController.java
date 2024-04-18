@@ -5,7 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import study.fitness.domain.Workout;
-import study.fitness.dto.WorkoutRequestDto;
+import study.fitness.dto.WorkoutPatchRequestDto;
+import study.fitness.dto.WorkoutPostRequestDto;
 import study.fitness.service.WorkoutService;
 
 import java.util.List;
@@ -22,14 +23,14 @@ public class WorkoutApiController {
     }
 
     @PostMapping("/workout")
-    public ResponseEntity<String> saveWorkout(@RequestBody @Validated WorkoutRequestDto requestDto, String userName) {
+    public ResponseEntity<String> saveWorkout(@RequestBody @Validated WorkoutPostRequestDto requestDto, String userName) {
         workoutService.createWorkout(requestDto, userName);
 
         return ResponseEntity.ok(requestDto.getName());
     }
 
     @PatchMapping("/workout")
-    public ResponseEntity<String> updateWorkout(@RequestBody @Validated WorkoutRequestDto requestDto, String userName) {
+    public ResponseEntity<String> updateWorkout(@RequestBody @Validated WorkoutPatchRequestDto requestDto, String userName) {
         workoutService.updateWorkout(requestDto, userName);
 
         return ResponseEntity.ok(requestDto.getName());
