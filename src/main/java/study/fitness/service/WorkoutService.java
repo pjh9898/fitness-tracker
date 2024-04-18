@@ -4,7 +4,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import study.fitness.domain.Workout;
-import study.fitness.dto.WorkoutRequestDto;
+import study.fitness.dto.WorkoutPatchRequestDto;
+import study.fitness.dto.WorkoutPostRequestDto;
 import study.fitness.repository.WorkoutRepository;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class WorkoutService {
         return workoutRepository.findAll();
     }
 
-    public Long createWorkout(WorkoutRequestDto requestDto, String userName) {
+    public Long createWorkout(WorkoutPostRequestDto requestDto, String userName) {
         Workout workout = requestDto.toEntity(userName);
         validateExistWorkoutByNameAndUserName(workout.getName(), workout.getUserName());
 
@@ -29,7 +30,7 @@ public class WorkoutService {
     }
 
 
-    public CreateUpdateWorkoutResponse updateWorkout(WorkoutRequestDto requestDto, String userName) {
+    public CreateUpdateWorkoutResponse updateWorkout(WorkoutPatchRequestDto requestDto, String userName) {
         Workout workout = requestDto.toEntity(userName);
         validateNotExistWorkoutByNameAndUserName(workout.getName(), workout.getUserName());
 

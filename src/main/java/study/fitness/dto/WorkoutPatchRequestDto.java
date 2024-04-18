@@ -1,25 +1,25 @@
 package study.fitness.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import study.fitness.domain.Workout;
 import study.fitness.domain.WorkoutType;
 
 @Getter
-public class WorkoutRequestDto {
+public class WorkoutPatchRequestDto {
 
-    @NotBlank(message = "이름은 필수항목입니다.")
     private String name;
-    @NotBlank(message = "운동 타입은 필수항목입니다.")
     private WorkoutType type;
     private String description;
 
     @Builder
-    private WorkoutRequestDto(String name, WorkoutType type, String description) {
+    private WorkoutPatchRequestDto(String name, WorkoutType type, String description) {
         this.name = name;
         this.type = type;
         this.description = description;
+    }
+
+    public WorkoutPatchRequestDto() {
     }
 
     public Workout toEntity(String userName) {
@@ -31,8 +31,8 @@ public class WorkoutRequestDto {
                 .build();
     }
 
-    static public WorkoutRequestDto of(String name, WorkoutType type, String description) {
-        return WorkoutRequestDto.builder()
+    static public WorkoutPatchRequestDto of(String name, WorkoutType type, String description) {
+        return WorkoutPatchRequestDto.builder()
                 .name(name)
                 .type(type)
                 .description(description)

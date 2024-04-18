@@ -26,7 +26,7 @@ class WorkoutRepositoryTest {
     @Test
     public void 운동찾기_이름이랑_유저이름으로() throws Exception {
         //given
-        Workout workout = Workout.builder().name("name1").type(WorkoutType.count).userName("userName1").build();
+        Workout workout = Workout.builder().name("name1").type(WorkoutType.COUNT).userName("userName1").build();
 
         //when
         Boolean result = workoutRepository.existsByNameAndUserName(workout.getName(), workout.getUserName());
