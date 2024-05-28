@@ -37,7 +37,6 @@ public class WorkoutService {
         workout.update(requestDto.getName(), requestDto.getType(), requestDto.getDescription());
 
         return new CreateUpdateWorkoutResponse(workout);
-        
     }
 
     public Long deleteWorkout(Long id) {
