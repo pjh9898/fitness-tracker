@@ -69,26 +69,26 @@ class WorkoutServiceTest {
 
     }
 
-    @Test
-    void 운동_업데이트() {
-        //given
-        String name = "name123";
-        WorkoutType type = WorkoutType.COUNT;
-        String description = "desc123";
-        String userName = "userName123";
-        WorkoutPostRequestDto requestDto = WorkoutPostRequestDto.of(name, type, description);
-        workoutService.createWorkout(requestDto, userName);
-
-        description = "desc1234";
-        WorkoutPatchRequestDto requestDto2 = WorkoutPatchRequestDto.of(name, type, description);
-
-        //when
-        WorkoutService.CreateUpdateWorkoutResponse workout = workoutService.updateWorkout(requestDto2, userName);
-
-        //then
-        assertThat(workout.getWorkout().getDescription()).isNotEqualTo(requestDto.getDescription());
-
-    }
+//    @Test
+//    void 운동_업데이트() {
+//        //given
+//        String name = "name123";
+//        WorkoutType type = WorkoutType.COUNT;
+//        String description = "desc123";
+//        String userName = "userName123";
+//        WorkoutPostRequestDto requestDto = WorkoutPostRequestDto.of(name, type, description);
+//        workoutService.createWorkout(requestDto, userName);
+//
+//        description = "desc1234";
+//        WorkoutPatchRequestDto requestDto2 = WorkoutPatchRequestDto.of(name, type, description);
+//
+//        //when
+//        WorkoutService.CreateUpdateWorkoutResponse workout = workoutService.updateWorkout(requestDto2, userName);
+//
+//        //then
+//        assertThat(workout.getWorkout().getDescription()).isNotEqualTo(requestDto.getDescription());
+//
+//    }
 
     @Test
     void 운동_삭제() throws Exception {

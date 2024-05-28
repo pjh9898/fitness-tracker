@@ -29,17 +29,17 @@ public class WorkoutApiController {
         return ResponseEntity.ok(requestDto.getName());
     }
 
-    @PatchMapping("/workout")
-    public ResponseEntity<String> updateWorkout(@RequestBody @Validated WorkoutPatchRequestDto requestDto, String userName) {
-        workoutService.updateWorkout(requestDto, userName);
+    @PatchMapping("/workout/{id}")
+    public ResponseEntity<String> updateWorkout( @Validated @PathVariable Long id, @RequestBody WorkoutPatchRequestDto requestDto, String userName ) {
+        workoutService.updateWorkout(id, requestDto, userName);
 
         return ResponseEntity.ok(requestDto.getName());
     }
 
-    @DeleteMapping("/workout/{workoutId}")
-    public ResponseEntity<Long> deleteWorkout(@PathVariable Long workoutId) {
-        workoutService.deleteWorkout(workoutId);
+    @DeleteMapping("/workout/{id}")
+    public ResponseEntity<Long> deleteWorkout(@PathVariable Long id) {
+        workoutService.deleteWorkout(id);
 
-        return ResponseEntity.ok(workoutId);
+        return ResponseEntity.ok(id);
     }
 }

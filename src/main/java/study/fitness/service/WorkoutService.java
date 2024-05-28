@@ -30,9 +30,9 @@ public class WorkoutService {
     }
 
 
-    public CreateUpdateWorkoutResponse updateWorkout(WorkoutPatchRequestDto requestDto, String userName) {
-        Workout workout = requestDto.toEntity(userName);
-        validateNotExistWorkoutByNameAndUserName(workout.getName(), workout.getUserName());
+    public CreateUpdateWorkoutResponse updateWorkout(Long id, WorkoutPatchRequestDto requestDto, String userName) {
+        Workout workout = workoutRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Workout not found with id: " + id));
 
         workout.update(requestDto.getName(), requestDto.getType(), requestDto.getDescription());
 
@@ -52,16 +52,6 @@ public class WorkoutService {
 
         if (isDuplicate) {
             throw new IllegalStateException("이미 존재하는 운동입니다.");
-        }
-
-        return true;
-    }
-
-    private boolean validateNotExistWorkoutByNameAndUserName(String name, String userName) {
-        boolean isDuplicate = workoutRepository.existsByNameAndUserName(name, userName);
-
-        if (!isDuplicate) {
-            throw new IllegalStateException("존재하지 않는 운동입니다.");
         }
 
         return true;
