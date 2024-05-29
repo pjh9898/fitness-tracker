@@ -1,5 +1,6 @@
 package study.fitness.api;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,10 +31,12 @@ public class WorkoutApiController {
     }
 
     @PatchMapping("/workout/{id}")
-    public ResponseEntity<String> updateWorkout( @Validated @PathVariable Long id, @RequestBody WorkoutPatchRequestDto requestDto, String userName ) {
-        workoutService.updateWorkout(id, requestDto, userName);
+    @Transactional
+    public ResponseEntity<Workout> updateWorkout( @Validated @PathVariable Long id, @RequestBody WorkoutPatchRequestDto requestDto) {
+        workoutService.updateWorkout(id, requestDto);
+        Workout workout = workoutService.findWorkoutById(id);
 
-        return ResponseEntity.ok(requestDto.getName());
+        return ResponseEntity.ok(workout);
     }
 
     @DeleteMapping("/workout/{id}")

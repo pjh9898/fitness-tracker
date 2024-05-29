@@ -9,5 +9,7 @@ public interface WorkoutRepository extends JpaRepository<Workout, Long> {
 
     Optional<Workout> findByName(String name);
 
+    Optional<Workout> findById(Long id);
+
     boolean existsByNameAndUserName(String name, String userName);
 }

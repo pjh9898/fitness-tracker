@@ -20,6 +20,10 @@ public class WorkoutService {
         return workoutRepository.findAll();
     }
 
+    public Workout findWorkoutById(Long id) {
+        return workoutRepository.findById(id).orElse(null);
+    }
+
     public Long createWorkout(WorkoutPostRequestDto requestDto, String userName) {
         Workout workout = requestDto.toEntity(userName);
         validateExistWorkoutByNameAndUserName(workout.getName(), workout.getUserName());
@@ -29,15 +33,11 @@ public class WorkoutService {
         return workout.getId();
     }
 
-
-    public CreateUpdateWorkoutResponse updateWorkout(Long id, WorkoutPatchRequestDto requestDto, String userName) {
+    public void updateWorkout(Long id, WorkoutPatchRequestDto requestDto) {
         Workout workout = workoutRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Workout not found with id: " + id));
 
         workout.update(requestDto.getName(), requestDto.getType(), requestDto.getDescription());
-
-        return new CreateUpdateWorkoutResponse(workout);
-        
     }
 
     public Long deleteWorkout(Long id) {
