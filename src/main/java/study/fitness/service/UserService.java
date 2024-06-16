@@ -35,6 +35,9 @@ public class UserService {
     public boolean validateDuplicateUser(String userId) {
         boolean isDuplicate = userRepository.existsByUserId(userId);
 
+        System.out.println("isDuplicate = " + isDuplicate);
+        System.out.println("userId = " + userId);
+
         if (isDuplicate) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
