@@ -10,6 +10,7 @@ import study.fitness.auth.JwtUtil;
 import study.fitness.domain.User;
 import study.fitness.dto.JWTInputDto;
 import study.fitness.dto.LoginRequestDto;
+import study.fitness.dto.LoginResponseDto;
 import study.fitness.repository.UserRepository;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class UserService {
     }
 
 
-    public String login(LoginRequestDto dto) {
+    public LoginResponseDto login(LoginRequestDto dto) {
         String id = dto.getUserId();
         String password = dto.getPassword();
         User user = userRepository.findByUserId(id).orElseThrow(() -> new UsernameNotFoundException("해당 회원이 존재하지 않습니다."));
@@ -56,8 +57,9 @@ public class UserService {
         }
 
         JWTInputDto info = JWTInputDto.of(user.getUserId(), user.getNickname());
+        String token = jwtUtil.createAccessToken(info);
 
-        return jwtUtil.createAccessToken(info);
+        return new LoginResponseDto(token, user.getNickname());
     }
 
     public List<User> findUsers() {
