@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import study.fitness.domain.User;
 import study.fitness.dto.LoginRequestDto;
+import study.fitness.dto.LoginResponseDto;
 import study.fitness.dto.SignupRequestDto;
 import study.fitness.service.UserService;
 
@@ -41,9 +42,9 @@ public class UserApiController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> getUserProfile(@RequestBody @Valid LoginRequestDto request) {
-        String token = this.userService.login(request);
-        return ResponseEntity.status(HttpStatus.OK).body(token);
+    public ResponseEntity<LoginResponseDto> getUserProfile(@RequestBody @Valid LoginRequestDto request) {
+        LoginResponseDto loginResponseDto = this.userService.login(request);
+        return ResponseEntity.status(HttpStatus.OK).body(loginResponseDto);
     }
 
     @Data
