@@ -4,10 +4,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import study.fitness.domain.Workout;
 import study.fitness.domain.WorkoutType;
 
 @Getter
+@NoArgsConstructor
 public class WorkoutPostRequestDto {
 
     @NotBlank(message = "이름은 필수항목입니다.")
@@ -21,9 +23,6 @@ public class WorkoutPostRequestDto {
         this.name = name;
         this.type = type;
         this.description = description;
-    }
-
-    public WorkoutPostRequestDto() {
     }
 
     public Workout toEntity(String userName) {

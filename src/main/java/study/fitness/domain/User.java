@@ -25,9 +25,6 @@ public class User {
     @Column(nullable = false)
     private String nickname;
 
-    @OneToMany(mappedBy = "user")
-    private List<Routine> routines;
-
     @Builder
     private User(String userId, String password, String nickname) {
         this.userId = userId;
