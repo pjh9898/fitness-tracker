@@ -1,4 +1,4 @@
-package study.fitness.config;
+package study.fitness.auth;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
